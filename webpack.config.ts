@@ -119,6 +119,11 @@ module.exports = {
           ws: false,
           secure: false,
           changeOrigin: true
+        },
+        "/": { //for the websocket connection
+            target: "wss://localhost:8081",
+            secure: true,
+            ws: true
         }
       },
       overlay: {
@@ -193,4 +198,4 @@ module.exports = {
         quiet: false
       })
     ]
-}
+};

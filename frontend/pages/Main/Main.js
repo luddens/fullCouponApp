@@ -11,9 +11,16 @@ import Upload from "../../globalComponents/Upload";
 import Payment from "../../globalComponents/Payment";
 import Map from "../../globalComponents/Map";
 import Webcam from "../../globalComponents/Webcam";
+
+const socket = new WebSocket("ws://localhost:8081", "protocolOne");
+
 export default function Main() {
   const [loggedIn, setLoggedIn] = useState(LocalStore.store.getLoggedIn());
   const [unmountLoginForms, setUnmountLoginForms] = useState(LocalStore.store.getLoggedIn());
+  
+  const testSocket = (e)=>{
+    socket.send("hello");
+  };
   
   const updateLoggedInStatus = (loggedIn)=>{
     setLoggedIn(loggedIn);
@@ -50,6 +57,9 @@ export default function Main() {
   var loginInnerContainerClasses = ( loggedIn ?"hidden": "") + " anim";
   return (
     <Router>
+      <button id = "clickme" onClick = {(e)=>{testSocket(e)}}>
+        Socket Test
+      </button>
       <div id = "main">
         <div>
           <div id = "header">

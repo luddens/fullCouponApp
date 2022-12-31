@@ -11,6 +11,11 @@ import * as jwtHelper from "./backend/utils/jwtHelper";
 import UserData from "./backend/dataAccess/users";
 import ListData from "./backend/dataAccess/lists";
 import * as utils from "./backend/utils/misc";
+import {createServer} from 'http';
+import WebSocket, {WebSocketServer} from 'ws';
+const server = createServer();
+const wss = new WebSocketServer({ port: 8081 });
+
 require("@babel/register")({extensions: [".js", ".ts"]});
 
 const app = express();
@@ -101,5 +106,25 @@ app.get("/register/", function (req, res) {
 app.listen(port, () => {
   console.log(colors.yellow(`Listening to app on server port ${port} in ${curEnv} mode`));
 });
+
+
+wss.on("connection", function connection(ws) {
+  
+  ws.binaryType = "arraybuffer";
+
+  ws.on("message", function message(data) {
+    console.log(data.toString());
+
+    wss.clients.forEach(function each(client) {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send("test");
+      }
+    });
+  });
+
+  ws.send("connection initialized");
+});
+
+
 
 export {};
